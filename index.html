@@ -4,34 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Save • Spend • Donate</title>
-    <!-- Imports the premium rounded Fredoka font for kids -->
-    <link rel="preconnect" href="https://googleapis.com">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Importing dynamic rounded display font to match Kawaii Marunote styling -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- Mid-Game Alert Banner -->
+    <div id="clutch-warning-banner">LAST 15 SECONDS! </div>
+
     <!-- Start Landing Screen Overlay -->
     <div id="start-screen" class="screen-overlay active">
         <div class="card-box">
-            <h1 class="title-badge" style="background: #4FA8FF; box-shadow: 0 4px 0 #2A79D2;">Save • Spend • Donate</h1>
-            <p style="color: #5A738E; margin: 18px 0; font-size: 18px; font-weight: 600;">Catch items in the right boxes! 🏦🛍️❤️</p>
-            <p style="color: #7F8C8D; margin-bottom: 20px; font-size: 14px;">Press Down Arrow to Skip items you don't want!</p>
-            <button class="action-btn start-btn" onclick="startGame()">Start Game!!!</button>
+            <h1 class="title-badge" style="background: #4FA8FF; box-shadow: 0 5px 0 #2A79D2;">Save • Spend • Donate</h1>
+            <p style="color: #5A738E; margin: 18px 0; font-size: 19px; font-weight: 700;">Catch items in the right boxes! 🏦🛍️❤️</p>
+            <p style="color: #7F8C8D; margin-bottom: 25px; font-size: 15px;">Press Down Arrow to Skip items you don't want!</p>
+            <button class="action-btn start-btn" onclick="triggerCountdown()">Start Game!!! </button>
         </div>
+    </div>
+
+    <!-- Live 3-2-1 Countdown Overlay -->
+    <div id="countdown-overlay" class="screen-overlay">
+        <div id="countdown-number">3</div>
     </div>
 
     <!-- Top HUD Dashboard -->
     <div id="hud-container">
         <div class="hud-stat">💰 Balance: <span id="balance-display">₹200</span></div>
         <div class="hud-stat">⭐ Score: <span id="score-val">0</span></div>
-        <div class="hud-stat">⏱️ Time: <span id="timer-val">120s</span></div>
+        <div class="hud-stat-timer">
+            <div id="timer-bar-container">
+                <div id="timer-bar"></div>
+            </div>
+            <span id="timer-val">120s</span>
+        </div>
+        <button id="pause-btn" class="pause-control-btn" onclick="togglePause()">⏸️ Pause</button>
     </div>
 
     <!-- Game Arena Canvas -->
     <div id="game-arena">
-        <!-- Falling items generate dynamically inside here -->
         <div id="baskets-row">
             <div class="basket" id="basket-0">
                 <div class="basket-emoji" id="emoji-0">🏦</div>
@@ -51,7 +64,7 @@
     <!-- Footer Controls Menu -->
     <div id="input-footer">
         <button class="arrow-btn" onclick="rotateLeft()">← Left (A)</button>
-        <span style="font-size: 15px; color: #5A738E; font-weight: 600;">Press Arrow keys to Swap baskets. Down Arrow to Skip!</span>
+        <span style="font-size: 15px; color: #5A738E; font-weight: 700;">Press Arrow keys to Swap baskets. Down Arrow to Skip!</span>
         <button class="arrow-btn" onclick="rotateRight()">Right → (D)</button>
     </div>
 
@@ -61,10 +74,10 @@
             <h2 id="final-badge" class="title-badge">Super Saver</h2>
             
             <div class="metrics-list">
-                <div>💰 Money Saved: <b><span id="end-save">₹0</span></b></div>
+                <div>💰 Money Left: <b><span id="end-save">₹0</span></b></div>
+                <div>✨ Total Points: <b><span id="end-points" style="color: #9B5DE5; font-size: 24px;">0</span></b></div>
                 <div>❤️ Donations Made: <b><span id="end-donate">0</span></b></div>
                 <div>🛍️ Luxury Bought: <b><span id="end-luxury">0</span></b></div>
-                <div>✨ Smart Choices: <b><span id="end-smart">0</span></b></div>
             </div>
             
             <button class="action-btn restart-btn" onclick="resetGame()">Play Again! 🌸</button>
