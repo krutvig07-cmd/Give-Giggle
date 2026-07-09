@@ -2,7 +2,8 @@
     --bg-color: #F4F9FF;
     --panel-bg: rgba(255, 255, 255, 0.95);
     --border-color: #B3D9FF;
-    --font-family: 'Fredoka', 'Comic Sans MS', sans-serif;
+    /* Adjusted font tracking parameters to mimic the rounded structure of Kawaii Marunote font styles */
+    --font-family: 'Fredoka', system-ui, -apple-system, sans-serif;
     --text-main: #3A8BFF;
 }
 
@@ -11,6 +12,7 @@
     user-select: none;
     margin: 0;
     padding: 0;
+    letter-spacing: -0.02em; /* Emulates compact kawaii type treatments */
 }
 
 body {
@@ -28,11 +30,41 @@ body {
     align-items: center;
 }
 
-/* Top HUD Dashboard */
+/* 15 Seconds Left Warning Popup Text Element */
+#clutch-warning-banner {
+    position: fixed;
+    top: 95px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.6);
+    background: #FF4757;
+    color: white;
+    font-size: 26px;
+    font-weight: 700;
+    padding: 10px 30px;
+    border-radius: 20px;
+    box-shadow: 0 6px 0 #D63031, 0 10px 25px rgba(255, 71, 87, 0.4);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#clutch-warning-banner.visible {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+    animation: bounceAlert 1s infinite alternate cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+@keyframes bounceAlert {
+    0% { transform: translateX(-50%) translateY(0) scale(1); }
+    100% { transform: translateX(-50%) translateY(-6px) scale(1.03); }
+}
+
+/* Dashboard Container */
 #hud-container {
     width: 95%;
     max-width: 900px;
-    margin-top: 12px;
+    margin-top: 15px;
     padding: 12px 20px;
     background: var(--panel-bg);
     border: 4px solid var(--border-color);
@@ -42,14 +74,15 @@ body {
     align-items: center;
     box-shadow: 0 6px 0 var(--border-color);
     z-index: 100;
+    gap: 10px;
 }
 
 .hud-stat {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--text-main);
     background: white;
-    padding: 6px 16px;
+    padding: 6px 14px;
     border-radius: 16px;
     border: 2px solid #E1F0FF;
     display: flex;
@@ -57,11 +90,72 @@ body {
     gap: 6px;
 }
 
-#balance-display {
-    color: #2ECC71;
+.hud-stat-timer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 6px 14px;
+    border-radius: 16px;
+    border: 2px solid #E1F0FF;
+    flex: 1;
+    max-width: 300px;
 }
 
-/* Game Arena */
+#timer-bar-container {
+    flex: 1;
+    height: 18px;
+    background: #E2E8F0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #CBD5E1;
+}
+
+#timer-bar {
+    width: 100%;
+    height: 100%;
+    background-color: #2ECC71;
+    border-radius: 12px;
+    transition: width 1s linear, background-color 0.4s;
+}
+
+#timer-val {
+    font-size: 16px;
+    font-weight: 700;
+    color: #4A5568;
+    min-width: 45px;
+    text-align: right;
+}
+
+/* Pulsing red alert warning for the last 15 seconds */
+.timer-warning {
+    animation: barPulse 0.4s infinite alternate;
+}
+
+@keyframes barPulse {
+    0% { transform: scale(1); filter: brightness(1); }
+    100% { transform: scale(1.01); filter: brightness(1.2); }
+}
+
+.pause-control-btn {
+    background: white;
+    border: 3px solid #A0AEC0;
+    border-radius: 14px;
+    padding: 6px 16px;
+    font-size: 16px;
+    font-family: var(--font-family);
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #CBD5E1;
+    transition: all 0.1s;
+}
+.pause-control-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #CBD5E1;
+}
+
+#balance-display { color: #2ECC71; }
+
 #game-arena {
     position: relative;
     width: 100%;
@@ -69,103 +163,96 @@ body {
     max-width: 1000px;
 }
 
-/* Falling Items */
 .falling-item {
     position: absolute;
-    font-size: 44px;
+    font-size: 46px;
     z-index: 10;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    animation: itemWobble 1.5s ease-in-out infinite alternate;
+    animation: itemWobble 1.2s ease-in-out infinite alternate;
 }
 
 @keyframes itemWobble {
-    0% { transform: rotate(-4deg); }
-    100% { transform: rotate(4deg); }
+    0% { transform: rotate(-5deg) scale(1.2); }
+    100% { transform: rotate(5deg) scale(1.2); }
 }
 
 .item-card {
-    font-size: 12px;
+    font-family: var(--font-family);
+    font-size: 13px;
     background: white;
-    border: 2.5px solid var(--border-color);
-    border-radius: 12px;
-    padding: 4px 8px;
-    font-weight: 600;
+    border: 3px solid var(--border-color);
+    border-radius: 14px;
+    padding: 5px 10px;
+    font-weight: 700;
     color: #4A5568;
     margin-top: -2px;
     white-space: nowrap;
-    box-shadow: 0 3px 0 var(--border-color);
+    box-shadow: 0 4px 0 var(--border-color);
 }
 
 .cost-tag {
     color: #E74C3C;
-    font-weight: 700;
 }
 
-/* Baskets Layout Layout */
 #baskets-row {
     position: absolute;
     bottom: 30px;
     width: 100%;
     height: 130px;
-    display: flex;
-    justify-content: center;
-    gap: 50px;
-    padding: 0 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+    padding: 0 20px;
 }
 
 .basket {
-    width: 170px;
+    width: 100%;
+    max-width: 180px;
     height: 120px;
     background: #EBF4FF;
     border: 4px solid var(--border-color);
-    border-radius: 20px 20px 45px 45px;
+    border-radius: 24px 24px 48px 48px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 0 var(--border-color), inset 0 -8px 0 rgba(0,0,0,0.02);
-    transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.15s;
+    box-shadow: 0 8px 0 var(--border-color);
+    transition: transform 0.1s ease;
 }
 
 .basket.bounce-trigger {
-    transform: scale(1.12);
-    background: #F4F9FF;
+    transform: scale(1.15);
 }
 
-.basket-emoji {
-    font-size: 46px;
-    margin-bottom: 2px;
-}
-
+.basket-emoji { font-size: 48px; }
 .basket-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: white;
     background: var(--text-main);
-    padding: 2px 12px;
+    padding: 3px 12px;
     border-radius: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
-/* Floating Feedback Text Pop-Ups */
 .pop-text {
     position: absolute;
     font-size: 34px;
     font-weight: 700;
-    text-shadow: 2px 2px 0px #FFF, -2px -2px 0px #FFF, 2px -2px 0px #FFF, -2px 2px 0px #FFF;
-    animation: popScatter 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    font-family: var(--font-family);
+    text-shadow: 3px 3px 0 #FFF, -3px -3px 0 #FFF, 3px -3px 0 #FFF, -3px 3px 0 #FFF;
+    animation: popScatter 0.8s ease-out forwards;
     z-index: 50;
-    pointer-events: none;
 }
 
 @keyframes popScatter {
-    0% { transform: translateY(0) scale(0.4); opacity: 0; }
-    20% { transform: translateY(-20px) scale(1.2); opacity: 1; }
-    100% { transform: translateY(-80px) scale(1); opacity: 0; }
+    0% { transform: translateY(0) scale(0.5); opacity: 0; }
+    30% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+    100% { transform: translateY(-90px) scale(1); opacity: 0; }
 }
 
 .sparkle {
@@ -174,7 +261,6 @@ body {
     height: 8px;
     border-radius: 50%;
     z-index: 40;
-    pointer-events: none;
     animation: burstOut 0.5s ease-out forwards;
 }
 
@@ -183,39 +269,37 @@ body {
     100% { transform: translate(var(--mx), var(--my)) scale(0); opacity: 0; }
 }
 
-/* Footer Input Controls layout bar */
 #input-footer {
     background: var(--panel-bg);
     border: 3px solid var(--border-color);
-    border-radius: 16px;
-    padding: 10px 24px;
-    margin-bottom: 12px;
+    border-radius: 18px;
+    padding: 12px 24px;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
     gap: 15px;
-    box-shadow: 0 4px 0 var(--border-color);
+    box-shadow: 0 5px 0 var(--border-color);
+    z-index: 100;
 }
 
 .arrow-btn {
     background: white;
-    border: 2.5px solid #CCD1D1;
-    border-radius: 10px;
-    padding: 6px 16px;
+    border: 3px solid #CCD1D1;
+    border-radius: 12px;
+    padding: 6px 18px;
     font-weight: 700;
     font-family: var(--font-family);
     font-size: 15px;
     cursor: pointer;
-    box-shadow: 0 3px 0 #BDC3C7;
+    box-shadow: 0 4px 0 #BDC3C7;
     color: #2C3E50;
     transition: transform 0.1s;
 }
-
 .arrow-btn:active {
     transform: translateY(3px);
-    box-shadow: 0 0px 0 #BDC3C7;
+    box-shadow: 0 1px 0 #BDC3C7;
 }
 
-/* Landing Screen Overlays Configuration */
 .screen-overlay {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
@@ -226,11 +310,25 @@ body {
     align-items: center;
     justify-content: center;
     opacity: 0; pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s ease;
+}
+.screen-overlay.active { opacity: 1; pointer-events: auto; }
+
+/* Cute Animated Countdown Number */
+#countdown-number {
+    font-size: 150px;
+    font-weight: 700;
+    color: #3A8BFF;
+    text-shadow: 0 12px 0 #B3D9FF;
 }
 
-.screen-overlay.active {
-    opacity: 1; pointer-events: auto;
+.pulse-step {
+    animation: cuteZoom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes cuteZoom {
+    0% { transform: scale(0.3); opacity: 0.3; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 .card-box {
@@ -245,7 +343,7 @@ body {
 }
 
 .title-badge {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 700;
     color: white;
     background: #5E9EFF;
@@ -253,37 +351,35 @@ body {
     border-radius: 20px;
     display: inline-block;
     margin-bottom: 15px;
-    box-shadow: 0 4px 0 #3679DE;
+    box-shadow: 0 5px 0 #3679DE;
 }
 
 .metrics-list {
     text-align: left;
     margin: 20px auto;
     max-width: 320px;
-    font-size: 18px;
+    font-size: 19px;
     color: #4A5568;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
 .action-btn {
     background: #2ECC71;
     color: white;
     border: none;
-    padding: 12px 40px;
-    font-size: 22px;
+    padding: 14px 44px;
+    font-size: 24px;
     font-weight: 700;
     font-family: var(--font-family);
-    border-radius: 16px;
+    border-radius: 18px;
     cursor: pointer;
-    box-shadow: 0 5px 0 #27AE60;
+    box-shadow: 0 6px 0 #27AE60;
     margin-top: 10px;
     transition: transform 0.1s;
 }
-
 .action-btn:active {
-    transform: translateY(5px);
-    box-shadow: 0 0px 0 #27AE60;
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #27AE60;
 }
-
