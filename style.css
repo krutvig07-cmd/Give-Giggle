@@ -2,7 +2,6 @@
     --bg-color: #F4F9FF;
     --panel-bg: rgba(255, 255, 255, 0.95);
     --border-color: #B3D9FF;
-    /* Adjusted font tracking parameters to mimic the rounded structure of Kawaii Marunote font styles */
     --font-family: 'Fredoka', system-ui, -apple-system, sans-serif;
     --text-main: #3A8BFF;
 }
@@ -12,7 +11,7 @@
     user-select: none;
     margin: 0;
     padding: 0;
-    letter-spacing: -0.02em; /* Emulates compact kawaii type treatments */
+    letter-spacing: -0.02em;
 }
 
 body {
@@ -30,7 +29,6 @@ body {
     align-items: center;
 }
 
-/* 15 Seconds Left Warning Popup Text Element */
 #clutch-warning-banner {
     position: fixed;
     top: 95px;
@@ -60,10 +58,9 @@ body {
     100% { transform: translateX(-50%) translateY(-6px) scale(1.03); }
 }
 
-/* Dashboard Container */
 #hud-container {
     width: 95%;
-    max-width: 900px;
+    max-width: 1100px;
     margin-top: 15px;
     padding: 12px 20px;
     background: var(--panel-bg);
@@ -75,10 +72,11 @@ body {
     box-shadow: 0 6px 0 var(--border-color);
     z-index: 100;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .hud-stat {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     color: var(--text-main);
     background: white;
@@ -127,7 +125,6 @@ body {
     text-align: right;
 }
 
-/* Pulsing red alert warning for the last 15 seconds */
 .timer-warning {
     animation: barPulse 0.4s infinite alternate;
 }
@@ -149,12 +146,15 @@ body {
     box-shadow: 0 4px 0 #CBD5E1;
     transition: all 0.1s;
 }
+
 .pause-control-btn:active {
     transform: translateY(3px);
     box-shadow: 0 1px 0 #CBD5E1;
 }
 
-#balance-display { color: #2ECC71; }
+#balance-display {
+    color: #2ECC71;
+}
 
 #game-arena {
     position: relative;
@@ -228,7 +228,10 @@ body {
     transform: scale(1.15);
 }
 
-.basket-emoji { font-size: 48px; }
+.basket-emoji {
+    font-size: 48px;
+}
+
 .basket-title {
     font-size: 13px;
     font-weight: 700;
@@ -295,6 +298,7 @@ body {
     color: #2C3E50;
     transition: transform 0.1s;
 }
+
 .arrow-btn:active {
     transform: translateY(3px);
     box-shadow: 0 1px 0 #BDC3C7;
@@ -302,19 +306,26 @@ body {
 
 .screen-overlay {
     position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background: rgba(244, 249, 255, 0.96);
     z-index: 500;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    opacity: 0; pointer-events: none;
+    opacity: 0;
+    pointer-events: none;
     transition: opacity 0.2s ease;
 }
-.screen-overlay.active { opacity: 1; pointer-events: auto; }
 
-/* Cute Animated Countdown Number */
+.screen-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 #countdown-number {
     font-size: 150px;
     font-weight: 700;
@@ -379,7 +390,33 @@ body {
     margin-top: 10px;
     transition: transform 0.1s;
 }
+
 .action-btn:active {
     transform: translateY(4px);
     box-shadow: 0 2px 0 #27AE60;
+}
+
+@media (max-width: 768px) {
+    #hud-container {
+        justify-content: center;
+    }
+
+    .hud-stat-timer {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    #input-footer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .action-btn {
+        font-size: 20px;
+        padding: 12px 30px;
+    }
+
+    #countdown-number {
+        font-size: 110px;
+    }
 }
