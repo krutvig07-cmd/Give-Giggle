@@ -1,95 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Save • Spend • Donate</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Save • Spend • Donate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="clutch-warning-banner">LAST 15 SECONDS!</div>
-
-    <div id="start-screen" class="screen-overlay active">
-        <div class="card-box">
-            <h1 class="title-badge" style="background: #4FA8FF; box-shadow: 0 5px 0 #2A79D2;">Save • Spend • Donate</h1>
-            <p style="color: #5A738E; margin: 18px 0; font-size: 19px; font-weight: 700;">Catch items in the right boxes! 🏦🛍️❤️</p>
-            <p style="color: #7F8C8D; margin-bottom: 25px; font-size: 15px;">Press Down Arrow to Skip items you don't want!</p>
-            <button class="action-btn start-btn" onclick="triggerCountdown()">Start Game!!!</button>
-        </div>
+  <!-- HUD -->
+  <div id="hud-container">
+    <div class="hud-stat">💰 Balance: <span id="balance-display">₹200</span></div>
+    <div class="hud-stat">⭐ Score: <span id="score-val">0</span></div>
+    <div class="hud-stat">🔥 Streak: <span id="streak-val">0</span></div>
+    <div class="hud-stat">✦ Multiplier: <span id="multiplier-val">1x</span></div>
+    <div class="hud-stat-timer">
+      <div id="timer-bar-container">
+        <div id="timer-bar"></div>
+      </div>
+      <span id="timer-val">120s</span>
     </div>
+    <button id="pause-btn" class="pause-control-btn" onclick="togglePause()">⏸️ Pause</button>
+  </div>
 
-    <div id="countdown-overlay" class="screen-overlay">
-        <div id="countdown-number">3</div>
-    </div>
+  <!-- Last 15s pop bar -->
+  <div id="clutch-bar">
+    <span id="clutch-text">Stay focused! Big rewards in the last 15 seconds!</span>
+  </div>
 
-    <div id="hud-container">
-        <div class="hud-stat">💰 Balance: <span id="balance-display">₹200</span></div>
-        <div class="hud-stat">⭐ Score: <span id="score-val">0</span></div>
-        <div class="hud-stat">🔥 Streak: <span id="streak-val">0</span></div>
-        <div class="hud-stat">✦ Multiplier: <span id="multiplier-val">1x</span></div>
-        <div class="hud-stat-timer">
-            <div id="timer-bar-container">
-                <div id="timer-bar"></div>
-            </div>
-            <span id="timer-val">120s</span>
-        </div>
-        <button id="pause-btn" class="pause-control-btn" onclick="togglePause()">⏸️ Pause</button>
+  <!-- Start Screen -->
+  <div id="start-screen" class="screen-overlay active">
+    <div class="card-box">
+      <h1 class="title-badge" style="background: #4FA8FF; box-shadow: 0 5px 0 #2A79D2;">Save • Spend • Donate</h1>
+      <p style="color: #5A738E; margin: 18px 0; font-size: 19px; font-weight: 700;">Catch items in the right boxes! 🏦🛒🫶🏻</p>
+      <p style="color: #7F8C8D; margin-bottom: 25px; font-size: 15px;">Press Down Arrow to Skip items you don't want!</p>
+      <button class="action-btn start-btn" onclick="triggerCountdown()">Start Game!!!</button>
     </div>
+  </div>
 
-    <div id="game-arena">
-        <div id="baskets-row">
-            <div class="basket" id="basket-0">
-                <div class="basket-emoji" id="emoji-0">🏦</div>
-                <div class="basket-title" id="title-0">Piggy Bank</div>
-            </div>
-            <div class="basket" id="basket-1">
-                <div class="basket-emoji" id="emoji-1">🛍️</div>
-                <div class="basket-title" id="title-1">Shopping Cart</div>
-            </div>
-            <div class="basket" id="basket-2">
-                <div class="basket-emoji" id="emoji-2">❤️</div>
-                <div class="basket-title" id="title-2">Charity Box</div>
-            </div>
-        </div>
-    </div>
+  <!-- Countdown -->
+  <div id="countdown-overlay" class="screen-overlay">
+    <div id="countdown-number">3</div>
+  </div>
 
-    <div id="input-footer">
-        <button class="arrow-btn" onclick="rotateLeft()">← Left (A)</button>
-        <span style="font-size: 15px; color: #5A738E; font-weight: 700;">Press Arrow keys to Swap baskets. Down Arrow to Skip!</span>
-        <button class="arrow-btn" onclick="rotateRight()">Right → (D)</button>
+  <!-- Game Arena -->
+  <div id="game-arena">
+    <div id="baskets-row">
+      <div class="basket" id="basket-0">
+        <div class="basket-emoji" id="emoji-0">🏦</div>
+        <div class="basket-title" id="title-0">Save</div>
+      </div>
+      <div class="basket" id="basket-1">
+        <div class="basket-emoji" id="emoji-1">🛒</div>
+        <div class="basket-title" id="title-1">Spend</div>
+      </div>
+      <div class="basket" id="basket-2">
+        <div class="basket-emoji" id="emoji-2">🫶🏻</div>
+        <div class="basket-title" id="title-2">Donate</div>
+      </div>
     </div>
-<div id="mobile-controls">
+  </div>
+
+  <!-- Desktop controls -->
+  <div id="input-footer">
+    <button class="arrow-btn" onclick="rotateLeft()">← Left (A)</button>
+    <span style="font-size: 15px; color: #5A738E; font-weight: 700;">
+      Use Arrow / A–D keys to rotate baskets. Down Arrow to skip!
+    </span>
+    <button class="arrow-btn" onclick="rotateRight()">Right → (D)</button>
+  </div>
+
+  <!-- Mobile controls -->
+  <div id="mobile-controls">
     <button class="mobile-btn" id="mobile-left" onclick="rotateLeft()">⬅️</button>
     <button class="mobile-btn" id="mobile-skip" onclick="fastSkipCurrentItem()">⏬</button>
     <button class="mobile-btn" id="mobile-right" onclick="rotateRight()">➡️</button>
-</div>
-    <div id="game-over-screen" class="screen-overlay">
-        <div class="card-box">
-            <h2 id="final-badge" class="title-badge">Super Saver</h2>
-            <div class="metrics-list">
-                <div id="reward-conversion-wrap">
-    <div class="reward-label">🎉 Finminn Reward Conversion</div>
-    <div id="coin-burst-area">
-        <div id="coin-icon">🪙</div>
-        <div id="coin-count">0</div>
-    </div>
-</div>
-                <div>💰 Money Left: <b><span id="end-save">₹0</span></b></div>
-                <div>✨ Total Score: <b><span id="end-points">0</span></b></div>
-                <div>🪙 Finminn Coins: <b><span id="end-finminn">0</span></b></div>
-                <div>₹ Real Value: <b><span id="end-rupees">₹0.00</span></b></div>
-                <div>❤️ Donations Made: <b><span id="end-donate">0</span></b></div>
-                <div>🛍️ Luxury Bought: <b><span id="end-luxury">0</span></b></div>
-            </div>
-            <button class="action-btn restart-btn" onclick="resetGame()">Play Again! 🌸</button>
-            
-        </div>
-    </div>
+  </div>
 
-    <script src="script.js"></script>
+  <!-- Scorecard Modal (old style) -->
+  <div id="game-over-modal" class="modal">
+    <div class="scorecard-card">
+      <h2 class="score-title">🎮 Round Completed!</h2>
+
+      <!-- Category Mini Summary -->
+      <div class="category-pills">
+        <span class="pill save-pill">🐷 Saved: <b id="stat-saved">0</b></span>
+        <span class="pill spend-pill">🛍️ Spent: <b id="stat-spent">0</b></span>
+        <span class="pill donate-pill">🤝 Donated: <b id="stat-donated">0</b></span>
+      </div>
+
+      <!-- Receipt Breakdown -->
+      <div class="receipt-box">
+        <!-- 1. Total Coins Collected -->
+        <div class="receipt-row">
+          <span>🪙 Coins Earned:</span>
+          <strong id="total-coins">0 Coins</strong>
+        </div>
+
+        <!-- 2. Conversion Formula -->
+        <div class="receipt-row conversion-rate">
+          <small>Conversion: 1,000 Coins = ₹1.00</small>
+          <span class="math-arrow">⬇️</span>
+          <strong id="base-rupees">₹0.00</strong>
+        </div>
+
+        <hr class="receipt-divider">
+
+        <!-- 3. Bonuses & Penalties -->
+        <div class="receipt-row bonus-row">
+          <span>🎯 Smart Saver Bonus (+20%):</span>
+          <span id="saver-bonus" class="green-text">+₹0.00</span>
+        </div>
+
+        <div class="receipt-row penalty-row">
+          <span>🛍️ Impulse Spend Penalty:</span>
+          <span id="spend-penalty" class="red-text">-₹0.00</span>
+        </div>
+
+        <hr class="receipt-divider bold">
+
+        <!-- 4. Final Total -->
+        <div class="receipt-row final-total">
+          <span>💰 Total Rupee Value:</span>
+          <span id="final-rupees">₹0.00</span>
+        </div>
+      </div>
+
+      <!-- Behavior Feedback Badge -->
+      <p id="financial-feedback" class="feedback-badge">
+        "Great job saving for the future!"
+      </p>
+
+      <button id="play-again-btn" onclick="resetGame()">Play Again 🔄</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
